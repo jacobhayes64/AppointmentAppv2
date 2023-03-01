@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const mongoose = require(`mongoose`);
+const mongoose = require('mongoose');
 
 require('dotenv').config();
 
@@ -22,10 +22,12 @@ connection.once(`open`, () => {
 const appointmentsRouter = require (`./routes/appointments`);
 const usersRouter = require (`./routes/users`);
 
-app.use('./appointments', appointmentsRouter);
-app.use('./users', usersRouter);
+
+app.use('/appointments', appointmentsRouter);
+app.use('/users', usersRouter);
 
 app.listen(port, () => {
     console.log(`Server is running on port; ${port}`);
 
 });
+
