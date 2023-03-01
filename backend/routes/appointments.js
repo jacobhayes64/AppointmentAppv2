@@ -29,4 +29,35 @@ router.route('/add').post((req, res) => {
         .catch(err => res.status(400).json('Error: ' + err));
 });
 
+router.route('/:id').get((req, res) => {
+    Appointment.findById(req.params.id)
+    .then(Appointment => res.json(Appointment))
+    .catch(err => res.status(400).json('Error: ' + err));
+});
+
+router.route('/:id').delete((req, res) => {
+    Appointment.findByIdAndDelete(req.params.id)
+    .then(() => res.json('Appointment deleted.'))
+    .catch(err => res.status(400).json('Error: ' + err));
+});
+
+router.route('/update/:id').post((req, res) => {
+    Appointment.findById(req.params.id)
+    .then(Appointment => {
+        Appointment.username = req.body.username;
+        Appointment.email = req.body.email;
+        Appointment.phone = req.body.phone;
+        Appointment.description = req.body.description;
+        Appointment.time = Number(req.body.time);
+        Appointment.date = Date.parse(req.body.date);
+        
+        Appointment.save()
+            .then(() => res.json('Appointment Updated'))
+            .catch(err => res.status(400).json("Error: " + err));
+    })
+    .catch(err => res.status(400).json('Error: ' + err));
+});
+
+
+
 module.exports = router;

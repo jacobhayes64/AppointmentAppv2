@@ -1,24 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+
+import Navbar from "./components/navbar.component"
+import AppointmentList from  "./components/appointment-list.component"
+import EditAppointment from  "./components/edit-appointment.component"
+import CreateAppointment from  "./components/create-appointment.component"
+import CreateUser from  "./components/create-user.component"
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Navbar />
+      
+      <Route path="/" exact component={AppointmentList} />
+      <Route path="/edit/:id" component={EditAppointment} />
+      <Route path="/create" component={CreateAppointment} />
+      <Route path="/user" component={CreateUser} />
+    </Router>
   );
 }
 export default App;
