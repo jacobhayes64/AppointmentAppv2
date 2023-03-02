@@ -4,7 +4,7 @@ export default class AppointmentList extends Component {
     render() {
         return (
             <div>
-                <p>Appointment List Component</p>
+                <p>Appointmnet List Component</p>
             </div>
         )
     }
