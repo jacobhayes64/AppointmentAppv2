@@ -1,157 +1,80 @@
-import React, { Component } from 'react';
-import DatePicker from 'react-datepicker';
+import React, {useState } from 'react';
 import "react-datepicker/dist/react-datepicker.css";
 
-export default class CreateAppointment extends Component {
-    constructor(props) {
-        super(props);
+function AppointmentForm() {
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [phone, setPhone] = useState("");
+    const [description, setDescription] = useState("");
+    const [date, setDate] = useState("");
+    const [time, setTime] = useState("");
+  
+    const handleSubmit = (event) => {
+      event.preventDefault();
+      console.log({ name, email, phone, description, date, time });
+      // Handle form submission here
+    }
+    return (
         
-        this.onChangeUsername = this.onChangeUsername.bind(this);
-        this.onChangeEmail = this.onChangeEmail.bind(this);
-        this.onChangePhone = this.onChangePhone.bind(this);
-        this.onChangeDescription = this.onChangeDescription.bind(this);
-        this.onChangeTime = this.onChangeTime.bind(this);
-        this.onChangeDate = this.onChangeDate.bind(this);
-        this.onChangeSubmit = this.onSubmit.bind(this);
-
-        this.state = {
-            username: "",
-            email: "",
-            phone: "",
-            description: "",
-            time: "",
-            date: new Date(),
-        }
+        <form onSubmit={handleSubmit}>
+        <br/>
+        <h5>Create an Appointment</h5>
+          <div className="formgroup">
+              <label>Name:</label>
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(event) => setName(event.target.value)}
+                  required
+                />
+          </div><br/>
+          <div className="formgroup">
+              <label>Email:</label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
+                  required
+                />
+          </div><br/>
+          <div className="formgroup">
+             <label>Phone:</label>
+            <input
+              type="tel"
+              value={phone}
+              onChange={(event) => setPhone(event.target.value)}
+              required
+                />
+          </div><br/>
+          <div className="formgroup">
+          <label>Description:</label>
+            <br/> <textarea
+              value={description}
+              onChange={(event) => setDescription(event.target.value)}
+              required
+            />
+          </div><br/>
+          <div className="formgroup">
+          <label>Date:</label>
+            <input
+              type="date"
+              value={date}
+              onChange={(event) => setDate(event.target.value)}
+              required
+            />
+          </div><br/>
+          <div className="formgroup">
+          <label>Time:</label>
+            <input
+              type="time"
+              value={time}
+              onChange={(event) => setTime(event.target.value)}
+              required
+            />
+          </div><br/>
+          <button style={{padding: "5px",}} type="submit">Submit</button>
+        </form>
+      );
     }
-
-    componentDidMount() {
-        this.setState({
-        users: ['test user'],
-        username: 'test user',
-    })}
-
-
-    onChangeUsername(e) {
-        this.setState({
-            username: e.target.value
-        });
-    }
-    onChangeEmail(e) {
-        this.setState({
-            email: e.target.value
-        });
-    }
-    onChangePhone(e) {
-        this.setState({
-            phone: e.target.value
-        });
-    }
-    onChangeDescription(e) {
-        this.setState({
-            description: e.target.value
-        });
-    }
-    onChangeTime(e) {
-        this.setState({
-            time: e.target.value
-        });
-    }
-    onChangeDate(e) {
-        this.setState({
-            date: e.target.value
-        });
-    }
-
-    onSubmit(e) {
-        e.preventDefault();
-
-        const appointment = {
-            username: this.state.username,
-            email: this.state.email,
-            phone: this.state.phone,
-            description: this.state.description,
-            time: this.state.time,
-            date: this.state.date,
-        }
-
-        console.log(appointment) //placeholder
-
-        window.location = "/";
-    }
-
-    render() {
-        return (
-            <div>
-                <h3>Create New Appointment</h3>
-                <form onSubmit={this.onSubmit}>
-                    <div className="form-group">
-                        <label>Username: </label> 
-                        <select ref="userInput"
-                            required
-                            className="form-control"
-                            value={this.state.username}
-                            onChange={this.onChangeUsername}>
-                                {
-                                    this.state.users.map(function(user) {
-                                        return <option
-                                            key={user}
-                                            value={user}>{user}
-                                            </option>
-                                    })
-                                }
-                        </select>
-                    </div>
-                    <div className="form-group">
-                        <label>Email: </label>
-                        <input type='text'
-                            required
-                            className="form-control"
-                            value={this.state.email}
-                            onChange={this.onChangeEmail}
-                            />
-                    </div>
-                    <div className="form-group">
-                        <label>Phone: </label>
-                        <input type='text'
-                            required
-                            className="form-control"
-                            value={this.state.phone}
-                            onChange={this.onChangePhone}
-                            />
-                    </div>
-                    <div className="form-group">
-                        <label>Description: </label>
-                        <input type='text'
-                            required
-                            className="form-control"
-                            value={this.state.description}
-                            onChange={this.onChangeDescription}
-                            />
-                    </div>
-                    <div className="form-group">
-                        <label>Time: </label>
-                        <input type='number'
-                            required
-                            className="form-control"
-                            value={this.state.time}
-                            onChange={this.onChangeTime}
-                            />
-                    </div>
-                    <div className="form-group">
-                        <label>Date: </label>
-                        <div>
-                            <DatePicker
-                                selected={this.state.date}
-                                onchange={this.onChangeDate}
-                            />
-                        </div>
-                    </div>
-
-                    <div className="form-group">
-                        <input type="submit" value="Create Appointment" className="btn btn-primary" />
-                </div>
-                </form>
-            </div>
-            )
-        }
-}
+    
+    export default AppointmentForm;
