@@ -4,11 +4,25 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+
+const store = createStore(() => ({
+  account: [
+    {
+      name: 'robin',
+      views: 1
+    }
+  ]
+}));
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <GoogleOAuthProvider clientId="827952640626-lhue8bgosjm7d7f88h5od3j2qpa6dnl9.apps.googleusercontent.com">
     <React.StrictMode>
+      <Provider store={store}>
       <App />
+      </Provider>
    </React.StrictMode>
   </GoogleOAuthProvider>
 );

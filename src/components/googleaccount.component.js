@@ -1,60 +1,53 @@
-import React, { useState, useEffect } from 'react';
-import { googleLogout, useGoogleLogin, GoogleLogin } from '@react-oauth/google';
-import axios from 'axios';
+import { useEffect, useState } from "react";
+import jwt_decode from "jwt-decode";
+import { useSelector } from 'react-redux';
+function Login() {
+    const birds = useSelector(state => state.birds);
+    const [user, setUser] = useState({});
 
-function UserLogin() {
-    const [ user, setUser ] = useState([]);
-    const [ profile, setProfile ] = useState([]);
+    function handleCallbackResponse(response) {
+        console.log("Encoded JWT ID token; " + response.credential)
+        var userObject = jwt_decode(response.credential);
+        console.log(userObject);
+        setUser(userObject);
+        document.getElementById("signInDiv").hidden = true;
+    }
 
-    const login = useGoogleLogin({
-        onSuccess: (codeResponse) => setUser(codeResponse),
-        onError: (error) => console.log('Login Failed:', error)
-    });
+    function handleSignOut(response) {
+        setUser({});
+        document.getElementById("signInDiv").hidden = false;
+    }
 
-    useEffect(
-        () => {
-            if (user) {
-                axios
-                    .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`, {
-                        headers: {
-                            Authorization: `Bearer ${user.access_token}`,
-                            Accept: 'application/json'
-                        }
-                    })
-                    .then((res) => {
-                        setProfile(res.data);
-                    })
-                    .catch((err) => console.log(err));
-            }
-        },
-        [ user ]
-    );
+    useEffect(() => {
+        /* global google */
+        google.accounts.id.initialize({
+            client_id: "827952640626-lhue8bgosjm7d7f88h5od3j2qpa6dnl9.apps.googleusercontent.com",
+            callback: handleCallbackResponse
+        });
 
-    // log out function to log the user out of google and set the profile array to null
-    const logOut = () => {
-        googleLogout();
-        setProfile(null);
-    };
+        google.accounts.id.renderButton(
+            document.getElementById("signInDiv"),
+            { theme: "outline", size: "extralarge"}
+        );
 
+        google.accounts.id.prompt();
+}, []);
+    //if no user, show sing in
+    //iff have a user show logout
     return (
         <div>
-            <GoogleLogin onSuccess={'fsg'} onError={'gsdg'} />
-            <br />
-            <br />
-            {profile ? (
-                <div>
-                    <img src={profile.picture} alt="user image" />
-                    <h3>User Logged in</h3>
-                    <p>Name: {profile.name}</p>
-                    <p>Email Address: {profile.email}</p>
-                    <br />
-                    <br />
-                    <button onClick={logOut}>Log out</button>
-                </div>
-            ) : (
-                <button onClick={() => login()}>Sign in with Google 🚀 </button>
-            )}
+           <div id="signInDiv"></div>
+           { Object.keys(user).length != 0 &&
+                <button onClick={ (e)  => handleSignOut(e)}>Sign Out</button>
+           }
+
+           { user &&
+            <div>
+                <img src={user.picture}></img>
+                <h3>{user.name}</h3>
+            </div>
+            }
         </div>
     );
-}
-export default GoogleLogin;
+    }
+export default Login;
