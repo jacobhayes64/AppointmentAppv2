@@ -6,7 +6,7 @@ export default class Home extends Component {
         return (
             <div>
                 <h3> Welcome To ajfjkasdfg</h3>
-                <p> Please login with your Google account</p>
+                <p> Your appointment information is synced to your Google account</p>
                 <Login></Login>
             </div>
             

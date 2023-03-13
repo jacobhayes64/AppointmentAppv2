@@ -5,16 +5,7 @@ import reportWebVitals from './reportWebVitals';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
-
-const store = createStore(() => ({
-  account: [
-    {
-      name: 'robin',
-      views: 1
-    }
-  ]
-}));
+import store from './store/accountstore';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

@@ -14,6 +14,7 @@ function AppointmentForm() {
       console.log({ name, email, phone, description, date, time });
       // Handle form submission here
     }
+
     return (
         
         <form onSubmit={handleSubmit}>
@@ -74,7 +75,12 @@ function AppointmentForm() {
           </div><br/>
           <button style={{padding: "5px",}} type="submit">Submit</button>
         </form>
+
+
+
       );
+
+
     }
-    
+
     export default AppointmentForm;
