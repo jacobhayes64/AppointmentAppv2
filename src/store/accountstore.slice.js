@@ -6,17 +6,30 @@ export const userSlice = createSlice({
 	reducers: {
 		loadUser: (state, action) => {
         const user = {
-        jwt: action.payload.jwt,
+            iss : action.payload.iss,
+            nbf : action.payload.nbf,
+            aud : action.payload.aud,
+            sub : action.payload.sub,
+            email : action.payload.email,
+            email_verified : action.payload.email_verified,
+            azp : action.payload.azp,
+            name : action.payload.name,
+            picture : action.payload.picture,
+            given_name: action.payload.given_name,
+            family_name : action.payload.family_name,
+            iat : action.payload.iat,
+            exp : action.payload.exp,
+            jti : action.payload.jti,
                     };
-        state.splice(0, 1, user);
+       // state.splice(0, 1, user);
+            state.push(user);
 		},
 
 	        
         deleteUser: (state, action) => {
         const user = {
-            jwt : undefined,    
         };
-        state.splice(0, 1, user);
+        state.shift(0);
             },
         }, 
 });

@@ -1,13 +1,18 @@
-import React, {useState } from 'react';
+import React, {useState, useContext } from 'react';
 import "react-datepicker/dist/react-datepicker.css";
-
+import { useDispatch, useSelector, createSelectorHook } from 'react-redux';
 function AppointmentForm() {
+    const dispatch = useDispatch();
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
     const [description, setDescription] = useState("");
     const [date, setDate] = useState("");
     const [time, setTime] = useState("");
+
+
+    var userState = useSelector((user) => user.user[0]);
+
   
     const handleSubmit = (event) => {
       event.preventDefault();
@@ -16,9 +21,13 @@ function AppointmentForm() {
     }
 
     return (
-        
+      <div>
+        <h6 style={{display: "inline"}}>Welcome {userState.name}</h6>
+        <img src={userState.picture} style={{height:30, width:30}} ></img>
         <form onSubmit={handleSubmit}>
         <br/>
+
+
         <h5>Create an Appointment</h5>
           <div className="formgroup">
               <label>Name:</label>
@@ -75,8 +84,7 @@ function AppointmentForm() {
           </div><br/>
           <button style={{padding: "5px",}} type="submit">Submit</button>
         </form>
-
-
+        </div>
 
       );
 

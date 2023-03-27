@@ -1,6 +1,6 @@
 import { useEffect, useState, createContext, useContext } from "react";
 import jwt_decode from "jwt-decode";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, createSelectorHook } from 'react-redux';
 import { loadUser } from '../store/accountstore.slice';
 import { deleteUser } from '../store/accountstore.slice';
 
@@ -9,12 +9,12 @@ import { deleteUser } from '../store/accountstore.slice';
 
 function Login() {
     const dispatch = useDispatch();
-    const test = useSelector((user) => user.jwt)
+    var userState = useSelector((user) => user.user[0]);
     const [user, setUser] = useState({});
+    
     function handleCallbackResponse(response) {
         console.log("Encoded JWT ID token; " + response.credential)
         var userObject = jwt_decode(response.credential);
-        var rawObject = response.credential
         console.log(userObject);
         setUser(userObject);
         document.getElementById("signInDiv").hidden = true;
@@ -23,7 +23,20 @@ function Login() {
         
 			dispatch(
 				loadUser({
-					jwt : rawObject,
+                    iss : userObject.iss,
+                    nbf : userObject.nbf,
+                    aud : userObject.aud,
+                    sub : userObject.sub,
+                    email : userObject.email,
+                    email_verified : userObject.email_verified,
+                    azp : userObject.azp,
+                    name : userObject.name,
+                    picture : userObject.picture,
+                    given_name: userObject.given_name,
+                    family_name : userObject.family_name,
+                    iat : userObject.iat,
+                    exp : userObject.exp,
+                    jti : userObject.jti,
 				})
 			);
 		
@@ -39,34 +52,38 @@ function Login() {
     function handleSignOut(response) {
         setUser({});
         document.getElementById("signInDiv").hidden = false;
-
+        
         dispatch(
             deleteUser({
-                jwt : null,
+                user : undefined
             })
         );
+        window.location.reload()
     } 
-    var userState = useSelector((user) => user.jwt) 
-    useEffect(() => {
-        console.log('test1' + userState);
-        if (userState ==! undefined) {
-            handleCallbackResponse2(userState)
-        } 
-        else{
-        /* global google */
-        google.accounts.id.initialize({
-            client_id: "827952640626-lhue8bgosjm7d7f88h5od3j2qpa6dnl9.apps.googleusercontent.com",
-            callback: handleCallbackResponse
-        });
 
-        google.accounts.id.renderButton(
-            document.getElementById("signInDiv"),
-            { theme: "outline", size: "extralarge"}
-        );
-            
-        google.accounts.id.prompt();
+
+    useEffect(() => {
+        if(userState == undefined){
+            /* global google */
+            google.accounts.id.initialize({
+                client_id: "827952640626-lhue8bgosjm7d7f88h5od3j2qpa6dnl9.apps.googleusercontent.com",
+                callback: handleCallbackResponse
+            });
+    
+            google.accounts.id.renderButton(
+                document.getElementById("signInDiv"),
+                { theme: "outline", size: "extralarge"}
+            );
+                
+            google.accounts.id.prompt();
         }
-}, [user]);
+        else{
+            setUser(userState)
+        }
+        
+
+        
+}, []); 
     //if no user, show sing in
     //iff have a user show logout
     return (
