@@ -1,6 +1,7 @@
-import React, {useState, useContext } from 'react';
+import React, {useState, useContext, useEffect, ReactDOM } from 'react';
 import "react-datepicker/dist/react-datepicker.css";
 import { useDispatch, useSelector, createSelectorHook } from 'react-redux';
+import { useNavigate } from "react-router-dom";
 function AppointmentForm() {
     const dispatch = useDispatch();
     const [name, setName] = useState("");
@@ -9,21 +10,44 @@ function AppointmentForm() {
     const [description, setDescription] = useState("");
     const [date, setDate] = useState("");
     const [time, setTime] = useState("");
-
+    let navigate = useNavigate()
 
     var userState = useSelector((user) => user.user[0]);
-
+    if (userState == undefined){
+      var userloaded = false
+    }
+    else {var userloaded = true}
+    useEffect(() => {
+    if (userState == undefined) {
+      navigate("/");
+    } else{
+    }
+  },[]);
   
     const handleSubmit = (event) => {
       event.preventDefault();
       console.log({ name, email, phone, description, date, time });
+
+      axios.post('http://localhost:5000/appointments/add', )
+      .then(response => console.log(response.data))
+      .catch(error => console.log(error));
       // Handle form submission here
     }
 
     return (
       <div>
-        <h6 style={{display: "inline"}}>Welcome {userState.name}</h6>
-        <img src={userState.picture} style={{height:30, width:30}} ></img>
+        
+        {userloaded ? (<div className="userinfo">
+          <h6 style={{display: "inline"}}>Hello👋 {userState.name}</h6>
+          <img src={userState.picture} style={{height:30, width:30}}></img>
+          </div>
+          ): (<h3>Log in please</h3>)
+          
+        
+        }
+
+
+        
         <form onSubmit={handleSubmit}>
         <br/>
 
@@ -87,8 +111,7 @@ function AppointmentForm() {
         </div>
 
       );
-
-
     }
+
 
     export default AppointmentForm;

@@ -3,6 +3,7 @@ import jwt_decode from "jwt-decode";
 import { useDispatch, useSelector, createSelectorHook } from 'react-redux';
 import { loadUser } from '../store/accountstore.slice';
 import { deleteUser } from '../store/accountstore.slice';
+import axios from 'axios';
 
 
 
@@ -11,6 +12,11 @@ function Login() {
     const dispatch = useDispatch();
     var userState = useSelector((user) => user.user[0]);
     const [user, setUser] = useState({});
+
+
+ axios.get('http://localhost:5000/appointments')
+   .then(response => console.log(response.data))
+   .catch(error => console.log(error));
     
     function handleCallbackResponse(response) {
         console.log("Encoded JWT ID token; " + response.credential)
