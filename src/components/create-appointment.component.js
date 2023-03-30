@@ -2,6 +2,8 @@ import React, {useState, useContext, useEffect, ReactDOM } from 'react';
 import "react-datepicker/dist/react-datepicker.css";
 import { useDispatch, useSelector, createSelectorHook } from 'react-redux';
 import { useNavigate } from "react-router-dom";
+import axios from 'axios'
+import qs from 'qs';
 function AppointmentForm() {
     const dispatch = useDispatch();
     const [name, setName] = useState("");
@@ -25,10 +27,23 @@ function AppointmentForm() {
   },[]);
   
     const handleSubmit = (event) => {
+
+      var data = {
+        username : name,
+        email : email,
+        phone : phone,
+        description : description,
+        time : time,
+        date : date,
+      };
+      
       event.preventDefault();
       console.log({ name, email, phone, description, date, time });
-
-      axios.post('http://localhost:5000/appointments/add', )
+      console.log(data)
+      axios.post('http://localhost:5000/appointments/add', data, {
+      headers: {
+        "Content-Type": "application/json",
+      },} )
       .then(response => console.log(response.data))
       .catch(error => console.log(error));
       // Handle form submission here

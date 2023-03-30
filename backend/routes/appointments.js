@@ -12,7 +12,7 @@ router.route('/add').post((req, res) => {
     const email = req.body.email;
     const phone = req.body.phone;
     const description = req.body.description
-    const time = Number(req.body.time);
+    const time = req.body.time;
     const date = Date.parse(req.body.date)
     
     const newAppointment = new Appointment({
@@ -48,7 +48,7 @@ router.route('/update/:id').post((req, res) => {
         Appointment.email = req.body.email;
         Appointment.phone = req.body.phone;
         Appointment.description = req.body.description;
-        Appointment.time = Number(req.body.time);
+        Appointment.time = req.body.time;
         Appointment.date = Date.parse(req.body.date);
         
         Appointment.save()
