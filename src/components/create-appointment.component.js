@@ -25,7 +25,13 @@ function AppointmentForm() {
     } else{
     }
   },[]);
-  
+    const handleCancel = () => {
+      navigate("/");
+      console.log("test");
+
+
+
+    }
     const handleSubmit = (event) => {
 
       var data = {
@@ -62,7 +68,7 @@ function AppointmentForm() {
         }
 
 
-        
+      <button onSubmit= {handleCancel} style={{padding: "5px",}} type="submit">Cancel</button>
         <form onSubmit={handleSubmit}>
         <br/>
 
